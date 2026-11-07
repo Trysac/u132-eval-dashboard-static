@@ -1,55 +1,44 @@
-# eval-dashboard-static
+# @trysac/eval-dashboard-static
 
-[![npm version](https://img.shields.io/npm/v/@trysac/eval-dashboard-static.svg)](https://www.npmjs.com/package/@trysac/eval-dashboard-static)
-[![license: MIT](https://img.shields.io/npm/l/@trysac/eval-dashboard-static.svg)](LICENSE)
-[![CI](https://github.com/Trysac/u132-eval-dashboard-static/actions/workflows/ci.yml/badge.svg)](https://github.com/Trysac/u132-eval-dashboard-static/actions/workflows/ci.yml)
+Static, script-free HTML dashboard comparing the latest evaluation run of each model against a baseline, with per-metric deltas and regression flags.
 
-Static, script-free HTML dashboard comparing the latest evaluation run of each model against a baseline, with per-metric deltas and regression flags
+## The Problem
 
-## Problem
+After each evaluation round, teams often manually copy numbers into spreadsheets to identify regressions, manually tracking the direction of each metric. Existing hosted dashboards require servers, introduce maintenance overhead, and may leak sensitive model performance data to third-party services. This library automates the comparison process, ensuring that regression rules are consistent and result in a single, portable, self-contained HTML file.
 
-Describe in two or three sentences the concrete problem this utility solves, who hits it, and why existing
-packages do not solve it well. Keep it factual; link to an issue or decision record when there is one.
+## Installation
 
-## Install
-
-```sh
+```bash
 npm install @trysac/eval-dashboard-static
 ```
 
-Requires Node.js 20 or newer. The package ships ES modules with TypeScript declarations.
-
 ## Usage
 
-```ts
-import { greet } from "@trysac/eval-dashboard-static";
-
-// Build a greeting; surrounding whitespace is ignored.
-const message = greet("  Ada ");
-console.log(message); // "Hello, Ada!"
-
-try {
-  greet("   ");
-} catch (error) {
-  console.error((error as Error).message); // "name must not be empty"
-}
+```typescript
+import { buildDashboard, renderHtml } from '@trysac/eval-dashboard-static';
+const runs = [
+  { run_id: 'r1', model: 'base', created_at: '2026-01-01T00:00:00Z', metrics: { acc: 0.8 } },
+  { run_id: 'r2', model: 'cand', created_at: '2026-01-02T00:00:00Z', metrics: { acc: 0.85 } },
+];
+const html = renderHtml(buildDashboard(runs, { baseline: 'base' }));
 ```
 
-## API
+## Public API
 
-| Export | Signature | Description |
-|---|---|---|
-| `greet` | `(name: string) => string` | Placeholder API; replace it with the real one. |
+- `buildDashboard(runs: EvalRun[], opts: DashboardOptions): Dashboard`: Analyzes evaluation runs. Throws `DashboardError` (codes: `unknown_baseline`, `invalid_value`, `invalid_run`, `too_many_runs`, `too_many_metrics`, `invalid_options`) on validation failure.
+- `renderHtml(d: Dashboard): string`: Renders the dashboard structure to secure HTML.
 
-## Development
+### Limits
 
-```sh
-npm install
-npm run check   # lint, format, types, tests with coverage, docs, secrets
-```
+- Maximum 10,000 runs.
+- Maximum 200 unique metrics.
+- Model and metric names must be 1-100 characters.
+- CLI input file size capped at 20 MiB.
 
-See [AGENTS.md](AGENTS.md) for the full command list and [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow.
+## Why not hosted alternatives?
 
-## License
+This utility provides an offline, diffable artifact that avoids network requests and data leakage, while ensuring every metric comparison strictly adheres to defined improvement rules.
 
-[MIT](LICENSE) © 2026 Miguel Gomez
+## Security
+
+See [docs/SECURITY.md](docs/SECURITY.md) for details on threat models and sanitization.
