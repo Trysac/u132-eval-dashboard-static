@@ -2,27 +2,14 @@
 
 ## Tools
 
-- [Vitest](https://vitest.dev/) runs the suites in `test/`.
-- Coverage is collected with V8 (`@vitest/coverage-v8`) over `src/`.
+- [Vitest](https://vitest.dev/) executes the test suites.
+- Coverage is measured using `@vitest/coverage-v8`.
 
-## Commands
+## Test Files
 
-```sh
-npm test            # vitest run --coverage
-npx vitest          # watch mode while developing
-npm run check       # every gate, including tests
-```
+- `test/cli.test.ts`: Covers CLI argument parsing, input/output operations, error handling (missing baseline, invalid JSON), and file output.
+- `test/index.test.ts`: Covers `buildDashboard` logic (timestamp sorting, baseline handling, metric validation, status calculation), `renderHtml` (sanitization, layout), and helper functions.
 
-## Rules
+## Coverage
 
-- Coverage must stay at or above 80 % for lines, branches, functions and statements (`vitest.config.ts`).
-  Lowering the thresholds is not allowed.
-- Test through the public entry point (`src/index.ts`) and assert observable behavior: return values,
-  thrown errors and their messages.
-- Each bug fix adds a test that fails without the fix.
-- Tests are deterministic: no network, no real clock or randomness without injection, no shared state between
-  tests. Temporary files go to the OS temp directory and are removed by the test.
-
-## Reports
-
-Coverage reports are written to `coverage/` (text summary and `lcov`). The folder is ignored by git.
+Coverage must remain at or above 80% for lines, branches, functions, and statements. Tests are deterministic, isolate the public API, and verify observable behavior (return values, thrown errors).

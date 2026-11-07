@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+  <title>Benchmark Results</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #222; background: #fff; line-height: 1.4; }
+    body { margin: 2rem; }
+    h1 { margin-bottom: 0.5rem; font-size: 1.6rem; }
+    p.meta { margin-top: 0; color: #555; font-size: 0.9rem; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1.5rem; font-variant-numeric: tabular-nums; }
+    th, td { border: 1px solid #ddd; padding: 0.5rem 0.75rem; text-align: right; }
+    th { background: #f7f7f7; font-weight: 600; }
+    th[scope="row"], th.model-name { text-align: left; }
+    td.baseline { background: #fdfdfd; font-weight: 500; }
+    td.better { background: #e6f4ea; color: #137333; font-weight: 600; }
+    td.worse { background: #fce8e6; color: #c5221f; font-weight: 600; }
+    td.same { background: #f1f3f4; color: #3c4043; }
+    td.missing { background: #fafafa; color: #80868b; font-style: italic; }
+    .legend { margin-top: 1.5rem; display: flex; gap: 1rem; font-size: 0.85rem; }
+    .legend span { display: inline-block; padding: 0.2rem 0.5rem; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Benchmark Results</h1>
+    <p class="meta">Baseline: <strong>model-a</strong></p>
+  </header>
+  <main>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Model</th>
+      <th scope="col">accuracy</th>
+      <th scope="col">latency_ms</th>
+        </tr>
+      </thead>
+      <tbody>
+    <tr>
+      <th scope="row" class="model-name">model-a (baseline)</th>
+      <td class="baseline">0.825</td>
+      <td class="baseline">120.4</td>
+    </tr>
+    <tr>
+      <th scope="row" class="model-name">model-b</th>
+      <td class="worse">0.795 (-0.03)</td>
+      <td class="better">110 (-10.4)</td>
+    </tr>
+    <tr>
+      <th scope="row" class="model-name">model-c</th>
+      <td class="better">0.85 (+0.025)</td>
+      <td class="worse">150.2 (+29.8)</td>
+    </tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span class="better">Better</span>
+      <span class="same">Within threshold</span>
+      <span class="worse">Worse</span>
+      <span class="baseline">Baseline</span>
+      <span class="missing">Missing</span>
+    </div>
+  </main>
+</body>
+</html>

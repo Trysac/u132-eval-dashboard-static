@@ -9,4 +9,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- Add static script-free evaluation dashboard generator comparing model runs against a baseline
 - Initial project structure from the factory utility template.

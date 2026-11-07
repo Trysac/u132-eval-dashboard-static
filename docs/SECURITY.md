@@ -1,28 +1,13 @@
-# Security practices
+# Security Model
 
-How this repository keeps the package and its users safe. The disclosure policy is in
-[../SECURITY.md](../SECURITY.md).
+## Threat Model
 
-## Secrets
+This utility processes potentially untrusted evaluation run names, model identifiers, and metric labels which may contain XSS payloads. 
 
-- No secrets, tokens or credentials in the repository, commit history, logs or prompts.
-- `gitleaks` runs as the last step of `npm run check` and as a dedicated CI job. Its configuration is
-  `.gitleaks.toml`.
-- Publishing credentials live only in the CI secret store or the maintainer's local npm configuration.
+### Defended
+- **XSS Injection**: All textual data (model names, metric names, titles) is passed through `escapeHtml`, neutralizing `&`, `<`, `>`, `"`, and `'` characters.
+- **Unauthorized Execution**: The output is entirely static, script-free HTML. It includes a Content Security Policy header (`default-src 'none'; style-src 'unsafe-inline'`) to prevent execution of any malicious code, should it be injected into styles.
+- **Denial of Service**: The utility enforces strict limits: 10,000 runs, 200 metrics, and a 20 MiB input file size (CLI).
 
-## Dependencies
-
-- Runtime dependencies are avoided; development dependencies are limited to the toolchain listed in
-  [STACK.md](STACK.md).
-- Dependabot opens weekly updates for npm packages and GitHub Actions.
-- Commit the generated `package-lock.json` so installs are reproducible.
-
-## Code
-
-- No `eval`, dynamic `Function` construction or shelling out from library code.
-- Inputs from callers are validated and rejected with explicit errors.
-
-## Publishing
-
-- Packages are published from a clean checkout after `npm run check` passes.
-- Only `dist/` is included in the published tarball.
+### Not Defended
+- **Data Integrity**: The tool assumes the input JSON is authentic and has not been tampered with prior to being provided to the library.
