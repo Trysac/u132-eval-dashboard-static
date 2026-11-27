@@ -8,9 +8,15 @@ After each evaluation round, teams often manually copy numbers into spreadsheets
 
 ## Installation
 
-```bash
-npm install @trysac/eval-dashboard-static
+Not published to npm yet. Build it from a clone, then install it from the local path:
+
+```sh
+git clone https://github.com/Trysac/u132-eval-dashboard-static.git
+cd u132-eval-dashboard-static && npm ci && npm run build
+cd ../your-project && npm install ../u132-eval-dashboard-static
 ```
+
+Imports keep the package name: `import { ... } from "@trysac/eval-dashboard-static"`.
 
 ## Usage
 
